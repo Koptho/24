@@ -109,7 +109,7 @@
 
   function startStageLevel(stageIdx, levelIdx) {
     const nums = STAGES[stageIdx].levels[levelIdx].nums;
-    const solution = window.Math24Solver.findIntegerSolution(nums);
+    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
     state.game = {
       mode: "stage",
       stageIdx,
@@ -154,7 +154,7 @@
 
   function loadNextSpeedPuzzle() {
     const nums = window.Math24Levels.getRandomSpeedSet();
-    const solution = window.Math24Solver.findIntegerSolution(nums);
+    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
     state.game = {
       mode: "speed",
       original: nums.slice(),
@@ -659,7 +659,7 @@
 
   function restartCurrentPuzzle() {
     const nums = state.game.original.slice();
-    const solution = window.Math24Solver.findIntegerSolution(nums);
+    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
     const kept = {
       mode: state.game.mode,
       stageIdx: state.game.stageIdx,

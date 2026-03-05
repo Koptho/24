@@ -145,6 +145,19 @@
     return !!findIntegerSolution(numbers, target);
   }
 
+  function findStrictIntegerSolution(numbers, target = 24) {
+    const solution = findIntegerSolution(numbers, target);
+    if (!solution) return null;
+    for (const step of solution.steps) {
+      if (step.includes("/")) return null;
+    }
+    return solution;
+  }
+
+  function isStrictIntegerSolvable(numbers, target = 24) {
+    return !!findStrictIntegerSolution(numbers, target);
+  }
+
   function evalBinary(fracA, fracB, opSymbolText) {
     if (opSymbolText === "+") return fracA.add(fracB);
     if (opSymbolText === "-") return fracA.sub(fracB);
@@ -157,8 +170,10 @@
     Fraction,
     findSolution,
     findIntegerSolution,
+    findStrictIntegerSolution,
     isSolvable,
     isIntegerSolvable,
+    isStrictIntegerSolvable,
     evalBinary,
   };
 })();
