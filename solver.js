@@ -69,11 +69,14 @@
     return a.div(b);
   }
 
-  function combineNodes(left, right, op) {
+  function combineNodes(left, right, op, integerOnly) {
     let frac;
     try {
       frac = applyOp(left.frac, right.frac, op);
     } catch (err) {
+      return null;
+    }
+    if (integerOnly && frac.den !== 1) {
       return null;
     }
     const symbol = opSymbol(op);
@@ -86,7 +89,7 @@
     };
   }
 
-  function findSolution(numbers, target = 24) {
+  function findSolution(numbers, target = 24, integerOnly = false) {
     const start = numbers.map((n) => ({
       frac: new Fraction(n, 1),
       expr: String(n),
@@ -108,12 +111,12 @@
           const a = nodes[i];
           const b = nodes[j];
           const candidates = [
-            combineNodes(a, b, "+"),
-            combineNodes(a, b, "*"),
-            combineNodes(a, b, "-"),
-            combineNodes(b, a, "-"),
-            combineNodes(a, b, "/"),
-            combineNodes(b, a, "/"),
+            combineNodes(a, b, "+", integerOnly),
+            combineNodes(a, b, "*", integerOnly),
+            combineNodes(a, b, "-", integerOnly),
+            combineNodes(b, a, "-", integerOnly),
+            combineNodes(a, b, "/", integerOnly),
+            combineNodes(b, a, "/", integerOnly),
           ];
 
           for (const next of candidates) {
@@ -134,6 +137,14 @@
     return !!findSolution(numbers, target);
   }
 
+  function findIntegerSolution(numbers, target = 24) {
+    return findSolution(numbers, target, true);
+  }
+
+  function isIntegerSolvable(numbers, target = 24) {
+    return !!findIntegerSolution(numbers, target);
+  }
+
   function evalBinary(fracA, fracB, opSymbolText) {
     if (opSymbolText === "+") return fracA.add(fracB);
     if (opSymbolText === "-") return fracA.sub(fracB);
@@ -145,7 +156,9 @@
   window.Math24Solver = {
     Fraction,
     findSolution,
+    findIntegerSolution,
     isSolvable,
+    isIntegerSolvable,
     evalBinary,
   };
 })();

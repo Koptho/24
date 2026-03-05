@@ -109,7 +109,7 @@
 
   function startStageLevel(stageIdx, levelIdx) {
     const nums = STAGES[stageIdx].levels[levelIdx].nums;
-    const solution = window.Math24Solver.findSolution(nums);
+    const solution = window.Math24Solver.findIntegerSolution(nums);
     state.game = {
       mode: "stage",
       stageIdx,
@@ -154,7 +154,7 @@
 
   function loadNextSpeedPuzzle() {
     const nums = window.Math24Levels.getRandomSpeedSet();
-    const solution = window.Math24Solver.findSolution(nums);
+    const solution = window.Math24Solver.findIntegerSolution(nums);
     state.game = {
       mode: "speed",
       original: nums.slice(),
@@ -238,6 +238,14 @@
       showModal({
         title: "Ugyldig trekk",
         body: "Du kan ikkje dele på null.",
+        actions: [{ label: "OK", action: "close-modal", type: "primary" }],
+      });
+      return;
+    }
+    if (out.den !== 1) {
+      showModal({
+        title: "Ugyldig trekk",
+        body: "Berre heiltal er tillate. Vel ein annan kombinasjon.",
         actions: [{ label: "OK", action: "close-modal", type: "primary" }],
       });
       return;
@@ -651,7 +659,7 @@
 
   function restartCurrentPuzzle() {
     const nums = state.game.original.slice();
-    const solution = window.Math24Solver.findSolution(nums);
+    const solution = window.Math24Solver.findIntegerSolution(nums);
     const kept = {
       mode: state.game.mode,
       stageIdx: state.game.stageIdx,

@@ -99,7 +99,7 @@
         const nums = source[i];
         const k = `${difficulty}:${key(nums)}`;
         if (usedGlobal.has(k)) continue;
-        const solve = window.Math24Solver.findSolution(nums);
+        const solve = window.Math24Solver.findIntegerSolution(nums);
         if (!solve) continue;
         selected.push(nums.slice());
         usedGlobal.add(k);
@@ -111,7 +111,7 @@
         const nums = generateCandidate(rand, difficulty);
         const k = `${difficulty}:${key(nums)}`;
         if (usedGlobal.has(k)) continue;
-        const solve = window.Math24Solver.findSolution(nums);
+        const solve = window.Math24Solver.findIntegerSolution(nums);
         if (!solve) continue;
         if (!validForDifficulty(nums, difficulty, solve)) continue;
         selected.push(nums);
@@ -120,7 +120,7 @@
 
       while (selected.length < 20) {
         const nums = generateCandidate(rand, "medium");
-        const solve = window.Math24Solver.findSolution(nums);
+        const solve = window.Math24Solver.findIntegerSolution(nums);
         if (!solve) continue;
         selected.push(nums);
       }
