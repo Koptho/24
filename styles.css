@@ -1,0 +1,387 @@
+:root {
+  --bg-mint: #aeefe7;
+  --bg-mint-deep: #7ddfce;
+  --card: #ffffff;
+  --text: #12313a;
+  --muted: #5d7a82;
+  --accent: #ff8f52;
+  --accent-strong: #ff6f2f;
+  --green-btn: #81dfcf;
+  --green-btn-deep: #5bc8b7;
+  --shadow: 0 10px 26px rgba(20, 61, 69, 0.14);
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Avenir Next", "Nunito", "Trebuchet MS", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at 0% 0%, #cffff7 0%, var(--bg-mint) 50%, #95e8dd 100%);
+}
+
+button {
+  border: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 16px 14px 24px;
+}
+
+.screen {
+  min-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.white-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 6px 16px rgba(19, 57, 65, 0.14);
+  font-size: 19px;
+}
+
+.brand-box {
+  padding: 22px;
+  text-align: center;
+}
+
+.brand-title {
+  margin: 8px 0 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.brand-sub {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.big-btn {
+  border-radius: var(--radius-md);
+  padding: 18px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow);
+}
+
+.btn-stage {
+  background: linear-gradient(180deg, #9de8db, #6fd7c7);
+}
+
+.btn-speed {
+  color: #fff;
+  background: linear-gradient(140deg, #2ca7f2, #4f7cf0);
+}
+
+.section-card {
+  padding: 16px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.icon-strip {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stub-btn {
+  border-radius: 12px;
+  padding: 10px 6px;
+  font-size: 0.85rem;
+  background: #edf9f6;
+}
+
+.stage-head {
+  padding: 18px;
+}
+
+.stage-head h2 {
+  margin: 4px 0;
+}
+
+.stage-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.medal-row {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.medal {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ecfffb;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 2px rgba(106, 205, 186, 0.35);
+  font-size: 26px;
+}
+
+.stage-card {
+  padding: 16px;
+}
+
+.stage-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stage-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.level-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.level-btn {
+  border-radius: 12px;
+  padding: 10px 0;
+  font-weight: 700;
+  background: #dff7f2;
+}
+
+.level-btn.locked {
+  background: #ecedef;
+  color: #95a1a9;
+}
+
+.level-btn.completed {
+  background: #b0f0e1;
+}
+
+.exam-btn {
+  margin-top: 12px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  background: #eff2f5;
+  color: #7f8a93;
+}
+
+.hud-card {
+  padding: 12px 14px;
+}
+
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-badge {
+  border-radius: 999px;
+  background: #ecfffb;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.board {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.num-card {
+  min-height: 92px;
+  border-radius: var(--radius-md);
+  background: #f9fffe;
+  box-shadow: inset 0 0 0 2px rgba(109, 208, 188, 0.3);
+  font-size: 2rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.num-card.selected {
+  background: #e6fff8;
+  box-shadow: inset 0 0 0 3px #36b9a3;
+}
+
+.operator-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.op-btn {
+  border-radius: 14px;
+  padding: 12px 0;
+  background: #ffffffcf;
+  box-shadow: var(--shadow);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.op-btn.active {
+  background: linear-gradient(180deg, #ffb173, var(--accent));
+  color: #fff;
+}
+
+.tools-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.small-btn {
+  border-radius: 12px;
+  padding: 10px;
+  background: #f4fffc;
+  font-weight: 700;
+}
+
+.small-btn[disabled] {
+  opacity: 0.5;
+}
+
+.history-card {
+  padding: 14px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.history-title {
+  margin: 0 0 10px;
+  font-weight: 800;
+}
+
+.step-line {
+  font-size: 0.95rem;
+  margin: 4px 0;
+}
+
+.result-card {
+  padding: 16px;
+  text-align: center;
+}
+
+.result-time {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.row > * {
+  flex: 1;
+}
+
+.primary-btn {
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 800;
+  background: linear-gradient(180deg, #9ee8db, #65d3c2);
+}
+
+.secondary-btn {
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  background: #eaf4f2;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 31, 35, 0.3);
+  display: grid;
+  place-items: center;
+  z-index: 20;
+  padding: 16px;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-card {
+  width: min(430px, 100%);
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.modal-card h3 {
+  margin-top: 0;
+}
+
+.mono {
+  font-family: "Menlo", "SFMono-Regular", monospace;
+  word-break: break-word;
+}
+
+@media (max-width: 380px) {
+  .num-card {
+    min-height: 78px;
+    font-size: 1.7rem;
+  }
+
+  .brand-title {
+    font-size: 1.9rem;
+  }
+}
