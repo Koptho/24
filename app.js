@@ -178,27 +178,32 @@
 
   function toggleCardSelection(cardId) {
     const selected = state.game.selectedCardIds;
-    const idx = selected.indexOf(cardId);
-    if (idx >= 0) {
-      selected.splice(idx, 1);
-    } else if (selected.length < 2) {
+    if (selected.length === 0) {
       selected.push(cardId);
-    } else {
-      selected.shift();
-      selected.push(cardId);
-    }
-
-    if (selected.length === 2 && state.game.operator) {
-      combineSelected();
+      render();
       return;
     }
-    render();
+
+    const firstId = selected[0];
+    if (firstId === cardId) {
+      selected.length = 0;
+      render();
+      return;
+    }
+
+    if (!state.game.operator) {
+      selected[0] = cardId;
+      render();
+      return;
+    }
+
+    combineSelected(firstId, cardId);
   }
 
   function setOperator(op) {
     state.game.operator = op;
-    if (state.game.selectedCardIds.length === 2) {
-      combineSelected();
+    if (state.game.selectedCardIds.length === 1) {
+      render();
       return;
     }
     render();
@@ -223,12 +228,16 @@
     render();
   }
 
-  function combineSelected() {
-    const ids = state.game.selectedCardIds;
-    if (ids.length !== 2 || !state.game.operator) return;
+  function combineSelected(firstId, secondId) {
+    if (!state.game.operator) return;
+    if (firstId === secondId) return;
 
-    const a = state.game.cards.find((c) => c.id === ids[0]);
-    const b = state.game.cards.find((c) => c.id === ids[1]);
+    const indexA = state.game.cards.findIndex((c) => c.id === firstId);
+    const indexB = state.game.cards.findIndex((c) => c.id === secondId);
+    if (indexA < 0 || indexB < 0) return;
+
+    const a = state.game.cards[indexA];
+    const b = state.game.cards[indexB];
     if (!a || !b) return;
 
     let out;
@@ -251,12 +260,19 @@
       return;
     }
     pushUndoSnapshot();
-
-    state.game.cards = state.game.cards.filter((c) => c.id !== a.id && c.id !== b.id);
-    state.game.cards.push({
+    const newCard = {
       id: state.nextCardId++,
       frac: out,
-    });
+    };
+    const cards = state.game.cards.slice();
+    if (indexA < indexB) {
+      cards.splice(indexA, 1);
+      cards[indexB - 1] = newCard;
+    } else {
+      cards.splice(indexA, 1);
+      cards[indexB] = newCard;
+    }
+    state.game.cards = cards;
     state.game.history.push(`(${a.frac.toString()} ${state.game.operator} ${b.frac.toString()}) = ${out.toString()}`);
     state.game.selectedCardIds = [];
 
