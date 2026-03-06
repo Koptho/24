@@ -101,10 +101,13 @@
   }
 
   function cloneCards(cards) {
-    return cards.map((c) => ({
-      id: c.id,
-      frac: new window.Math24Solver.Fraction(c.frac.num, c.frac.den),
-    }));
+    return cards.map((c) => {
+      if (!c) return null;
+      return {
+        id: c.id,
+        frac: new window.Math24Solver.Fraction(c.frac.num, c.frac.den),
+      };
+    });
   }
 
   function startStageLevel(stageIdx, levelIdx) {
@@ -177,6 +180,9 @@
   }
 
   function toggleCardSelection(cardId) {
+    const clickedCard = state.game.cards.find((c) => c && c.id === cardId);
+    if (!clickedCard) return;
+
     const selected = state.game.selectedCardIds;
     if (selected.length === 0) {
       selected.push(cardId);
@@ -232,8 +238,8 @@
     if (!state.game.operator) return;
     if (firstId === secondId) return;
 
-    const indexA = state.game.cards.findIndex((c) => c.id === firstId);
-    const indexB = state.game.cards.findIndex((c) => c.id === secondId);
+    const indexA = state.game.cards.findIndex((c) => c && c.id === firstId);
+    const indexB = state.game.cards.findIndex((c) => c && c.id === secondId);
     if (indexA < 0 || indexB < 0) return;
 
     const a = state.game.cards[indexA];
@@ -265,16 +271,12 @@
       frac: out,
     };
     const cards = state.game.cards.slice();
-    if (indexA < indexB) {
-      cards.splice(indexA, 1);
-      cards[indexB - 1] = newCard;
-    } else {
-      cards.splice(indexA, 1);
-      cards[indexB] = newCard;
-    }
+    cards[indexA] = null;
+    cards[indexB] = newCard;
     state.game.cards = cards;
     state.game.history.push(`(${a.frac.toString()} ${state.game.operator} ${b.frac.toString()}) = ${out.toString()}`);
     state.game.selectedCardIds = [];
+    state.game.operator = null;
 
     checkEndOfPuzzle();
     render();
@@ -292,8 +294,9 @@
   }
 
   function checkEndOfPuzzle() {
-    if (state.game.cards.length !== 1) return;
-    const done = state.game.cards[0].frac.equalsInt(24);
+    const remaining = state.game.cards.filter(Boolean);
+    if (remaining.length !== 1) return;
+    const done = remaining[0].frac.equalsInt(24);
 
     if (done && state.game.mode === "stage") {
       const { stageIdx, levelIdx } = state.game;
@@ -572,6 +575,9 @@
   function renderGame() {
     const boardHtml = state.game.cards
       .map((c) => {
+        if (!c) {
+          return '<div class="num-card" aria-hidden="true"></div>';
+        }
         const selected = state.game.selectedCardIds.includes(c.id) ? "selected" : "";
         return `<button class="num-card ${selected}" data-card-id="${c.id}">${c.frac.toString()}</button>`;
       })
