@@ -125,7 +125,7 @@
       const nums = handcrafted[difficulty][i];
       const k = key(nums);
       if (usedGlobal.has(k) || poolKeys.has(k)) continue;
-      const solve = window.Math24Solver.findStrictIntegerSolution(nums);
+      const solve = window.Math24Solver.findPositiveIntegerSolution(nums);
       if (!solve || !validForDifficulty(nums, difficulty, solve)) continue;
       pool.push({ nums: nums.slice(), score: difficultyScore(nums, solve) });
       poolKeys.add(k);
@@ -137,7 +137,7 @@
       const nums = generateCandidate(rand, difficulty);
       const k = key(nums);
       if (usedGlobal.has(k) || poolKeys.has(k)) continue;
-      const solve = window.Math24Solver.findStrictIntegerSolution(nums);
+      const solve = window.Math24Solver.findPositiveIntegerSolution(nums);
       if (!solve || !validForDifficulty(nums, difficulty, solve)) continue;
       pool.push({ nums, score: difficultyScore(nums, solve) });
       poolKeys.add(k);
@@ -181,7 +181,7 @@
       if (stage === 0) {
         for (let i = 0; i < BABY_SUPER_EASY.length && selected.length < 20; i += 1) {
           const nums = BABY_SUPER_EASY[i];
-          const solve = window.Math24Solver.findStrictIntegerSolution(nums);
+          const solve = window.Math24Solver.findPositiveIntegerSolution(nums);
           if (!solve) continue;
           const k = key(nums);
           if (selectedKeys.has(k) || usedGlobal.has(k)) continue;
@@ -207,7 +207,7 @@
         const nums = generateCandidate(rand, difficulty);
         const k = key(nums);
         if (selectedKeys.has(k) || usedGlobal.has(k)) continue;
-        const solve = window.Math24Solver.findStrictIntegerSolution(nums);
+        const solve = window.Math24Solver.findPositiveIntegerSolution(nums);
         if (!solve || !validForDifficulty(nums, difficulty, solve)) continue;
         selected.push(nums.slice());
         selectedKeys.add(k);

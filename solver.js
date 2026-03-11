@@ -69,7 +69,7 @@
     return a.div(b);
   }
 
-  function combineNodes(left, right, op, integerOnly) {
+  function combineNodes(left, right, op, integerOnly, positiveOnly) {
     let frac;
     try {
       frac = applyOp(left.frac, right.frac, op);
@@ -77,6 +77,9 @@
       return null;
     }
     if (integerOnly && frac.den !== 1) {
+      return null;
+    }
+    if (positiveOnly && frac.num <= 0) {
       return null;
     }
     const symbol = opSymbol(op);
@@ -89,7 +92,7 @@
     };
   }
 
-  function findSolution(numbers, target = 24, integerOnly = false) {
+  function findSolution(numbers, target = 24, integerOnly = false, positiveOnly = false) {
     const start = numbers.map((n) => ({
       frac: new Fraction(n, 1),
       expr: String(n),
@@ -111,12 +114,12 @@
           const a = nodes[i];
           const b = nodes[j];
           const candidates = [
-            combineNodes(a, b, "+", integerOnly),
-            combineNodes(a, b, "*", integerOnly),
-            combineNodes(a, b, "-", integerOnly),
-            combineNodes(b, a, "-", integerOnly),
-            combineNodes(a, b, "/", integerOnly),
-            combineNodes(b, a, "/", integerOnly),
+            combineNodes(a, b, "+", integerOnly, positiveOnly),
+            combineNodes(a, b, "*", integerOnly, positiveOnly),
+            combineNodes(a, b, "-", integerOnly, positiveOnly),
+            combineNodes(b, a, "-", integerOnly, positiveOnly),
+            combineNodes(a, b, "/", integerOnly, positiveOnly),
+            combineNodes(b, a, "/", integerOnly, positiveOnly),
           ];
 
           for (const next of candidates) {
@@ -145,8 +148,8 @@
     return !!findIntegerSolution(numbers, target);
   }
 
-  function findStrictIntegerSolution(numbers, target = 24) {
-    const solution = findIntegerSolution(numbers, target);
+  function findStrictIntegerSolution(numbers, target = 24, positiveOnly = false) {
+    const solution = findSolution(numbers, target, true, positiveOnly);
     if (!solution) return null;
     for (const step of solution.steps) {
       if (step.includes("/")) return null;
@@ -156,6 +159,14 @@
 
   function isStrictIntegerSolvable(numbers, target = 24) {
     return !!findStrictIntegerSolution(numbers, target);
+  }
+
+  function findPositiveIntegerSolution(numbers, target = 24) {
+    return findStrictIntegerSolution(numbers, target, true);
+  }
+
+  function isPositiveIntegerSolvable(numbers, target = 24) {
+    return !!findPositiveIntegerSolution(numbers, target);
   }
 
   function evalBinary(fracA, fracB, opSymbolText) {
@@ -171,9 +182,11 @@
     findSolution,
     findIntegerSolution,
     findStrictIntegerSolution,
+    findPositiveIntegerSolution,
     isSolvable,
     isIntegerSolvable,
     isStrictIntegerSolvable,
+    isPositiveIntegerSolvable,
     evalBinary,
   };
 })();

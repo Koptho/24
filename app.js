@@ -112,7 +112,7 @@
 
   function startStageLevel(stageIdx, levelIdx) {
     const nums = STAGES[stageIdx].levels[levelIdx].nums;
-    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
+    const solution = window.Math24Solver.findPositiveIntegerSolution(nums);
     state.game = {
       mode: "stage",
       stageIdx,
@@ -157,7 +157,7 @@
 
   function loadNextSpeedPuzzle() {
     const nums = window.Math24Levels.getRandomSpeedSet();
-    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
+    const solution = window.Math24Solver.findPositiveIntegerSolution(nums);
     state.game = {
       mode: "speed",
       original: nums.slice(),
@@ -207,11 +207,8 @@
   }
 
   function setOperator(op) {
+    if (state.game.selectedCardIds.length === 0) return;
     state.game.operator = op;
-    if (state.game.selectedCardIds.length === 1) {
-      render();
-      return;
-    }
     render();
   }
 
@@ -265,6 +262,14 @@
       });
       return;
     }
+    if (out.num <= 0) {
+      showModal({
+        title: "Ugyldig trekk",
+        body: "Mellomresultat må vere positive heiltal.",
+        actions: [{ label: "OK", action: "close-modal", type: "primary" }],
+      });
+      return;
+    }
     pushUndoSnapshot();
     const newCard = {
       id: state.nextCardId++,
@@ -275,8 +280,7 @@
     cards[indexB] = newCard;
     state.game.cards = cards;
     state.game.history.push(`(${a.frac.toString()} ${state.game.operator} ${b.frac.toString()}) = ${out.toString()}`);
-    state.game.selectedCardIds = [];
-    state.game.operator = null;
+    state.game.selectedCardIds = [newCard.id];
 
     checkEndOfPuzzle();
     render();
@@ -681,7 +685,7 @@
 
   function restartCurrentPuzzle() {
     const nums = state.game.original.slice();
-    const solution = window.Math24Solver.findStrictIntegerSolution(nums);
+    const solution = window.Math24Solver.findPositiveIntegerSolution(nums);
     const kept = {
       mode: state.game.mode,
       stageIdx: state.game.stageIdx,
